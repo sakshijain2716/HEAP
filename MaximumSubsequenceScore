@@ -1,0 +1,32 @@
+class Solution {
+public:
+    long long maxScore(vector<int>& nums1, vector<int>& nums2, int k) {
+        int n = nums1.size();
+        vector<pair<int,int>> v;
+        for(int i=0;i<n;i++)
+        {
+            v.push_back({nums2[i],nums1[i]});
+        } //becz nums2 k acc sort krna h sch that the jo value sort krne se //phle h same index pe vo baad //me bhi same rhe
+        
+        sort(v.rbegin(),v.rend());
+        priority_queue<int,vector<int>,greater<int>> pq; //min heap 
+        //isse hr ek step age bhdenge jab num 2 ka min element aajaega 
+        //or num1 ka minimum vala hataenge sum me se
+        long long sum=0;
+        for(int i=0;i<k;i++)
+        {
+            sum+=v[i].second;
+            pq.push(v[i].second);
+        }
+        long long ans = sum*v[k-1].first;
+        for(int i=k ; i<n;i++)
+        {
+            sum-=pq.top();
+            pq.pop();
+            sum+=v[i].second;
+            pq.push(v[i].second);
+            ans = max(ans , sum*v[i].first);
+        }
+        return ans;
+    }
+};
