@@ -1,0 +1,46 @@
+class Solution {
+public:
+    string repeatLimitedString(string s, int k) {        //k is repeat limit
+        unordered_map<char,int>mp;
+        for(auto it:s)
+        mp[it]++;
+
+        priority_queue<pair<char,int>>pq;
+        for(auto it:mp)
+        pq.push({it.first , it.second});
+        
+        string ans="";
+
+        while(!pq.empty())
+        {
+            char c = pq.top().first;
+            int freq = pq.top().second;
+            pq.pop();
+
+            int len = min(freq,k);          //k se jyada nhi dalne islie min nikala
+            for(int i=0;i<len;i++)
+            ans+=c;
+    
+                int rem = freq-len;         //agr abhi bhi bache h ya nhi
+                if(rem>0)            //agr bache h to k times k baad ek next char dalenge if present
+                {
+                    if(!pq.empty())
+                    {
+                        char c1 = pq.top().first;     //next char
+                        int  freq1 = pq.top().second;   //its freq
+                        pq.pop();
+                        ans+=c1;       //only 1 dala
+                        freq1--;         //freq updation
+                        if(freq1!=0)    //if still present then push
+                        pq.push({c1,freq1});
+                    }
+                    else
+                    return ans;
+                
+                pq.push({c,rem});          //jo starting me dala tha ab heap me uski rem freq push ki
+                }
+            }
+        
+            return ans;
+    }
+};
