@@ -1,0 +1,33 @@
+class Solution {
+public:
+    bool isNStraightHand(vector<int>& hand, int groupsize) {
+        int n = hand.size();
+        if(n % groupsize !=0)
+        return false;
+
+        map<int,int>mp;
+        for(auto it:hand)
+        mp[it]++;
+
+        while(!mp.empty())
+        {
+            int num = mp.begin()->first;
+            int i=0;
+                while(i<groupsize)
+                {
+                    if(mp.find(num+i)==mp.end())
+                    return false;
+                    else
+                    {
+                    mp[num+i]--;
+                    if(mp[num+i]==0)
+                    mp.erase(num+i);
+                    }
+                    i++;
+                }
+        }
+        // for(auto it:mp)
+        // cout<<it.first<<" "<<it.second<<"\n";
+        return true;
+    }
+};
